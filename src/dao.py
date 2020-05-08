@@ -5,12 +5,13 @@ def get_all_products():
     return [p.serialize() for p in Product.query.all()]
 
 
-def create_product(name, description, condition, price):
+def create_product(name, description, condition, price, sold):
     new_product = Product(
-        name=name
-        description=description
-        condition=condition
-        price=price
+        name=name,
+        description=description,
+        condition=condition,
+        price=price,
+        sold=sold
     )
     db.session.add(new_product)
     db.session.commit()
