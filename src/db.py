@@ -18,6 +18,8 @@ class Product(db.Model):
     condition = db.Column(db.String, nullable=False)
     price = db.Column(db.Float, nullable=False)
     sold = db.Column(db.Boolean, nullable=False)
+    categories = db.relationship(
+        'Category', secondary=association_table, back_populates='products')
 
     def __init__(self, **kwargs):
         self.name = kwargs.get('name', '')
@@ -41,6 +43,8 @@ class Category(db.Model):
     __tablename__ = 'category'
     id = db.Column(db.Integer, primary_key=True)
     category = db.Column(db.String, nullable=False)
+    products = db.relationship(
+        'Product', secondary=association_table, back_populates='categories')
 
     def __init__(self, **kwargs):
         self.category = kwargs.get('category', '')

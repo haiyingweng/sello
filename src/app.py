@@ -37,7 +37,8 @@ def create_product():
         description=body.get('description'),
         condition=body.get('condition'),
         price=body.get('price'),
-        sold=False
+        sold=False,
+        categories=body.get('categories')
     )
     return success_response(course)
 
@@ -56,6 +57,19 @@ def delete_product(product_id):
     if product is None:
         return failure_response("Product not found!")
     return success_response(product)
+
+
+@app.route('/categories/')
+def get_categories():
+    return success_response(dao.get_all_categories())
+
+
+@app.route('/categories/<int:category_id>/')
+def get_category(category_id):
+    category = dao.get_category_by_id(category_id)
+    if category is None:
+        return failure_response("Category not found!")
+    return success_response(category)
 
 
 if __name__ == "__main__":
