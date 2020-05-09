@@ -83,10 +83,50 @@ def get_product(product_id):
 
 @app.route('/products/<int:product_id>/', methods=['DELETE'])
 def delete_product(product_id):
-    product = dao.delete_product_by_id(product_id)
+    success, session_token = extract_token(request)
 
+    if not success:
+        return session_token
+
+    user = user_dao.get_user_by_session_token(session_token)
+    if not user or not user.verify_session_token(session_token):
+        return failure_response('Invalid session token')
+
+    product = dao.get_product_by_id(product_id)
     if product is None:
         return failure_response("Product not found!")
+
+    user_id = user.serialize()['id']
+    if not user_id == product['seller_id']:
+        return failure_response("Cannot delete product not sold by current user")
+
+    product = dao.delete_product_by_id(product_id)
+
+    return success_response(product)
+
+
+@app.route('/products/<int:product_id>/buy/', methods=['POST'])
+def buy_product(product_id):
+    success, session_token = extract_token(request)
+
+    if not success:
+        return session_token
+
+    user = user_dao.get_user_by_session_token(session_token)
+    if not user or not user.verify_session_token(session_token):
+        return failure_response('Invalid session token')
+
+    product = dao.get_product_by_id(product_id)
+    if product is None:
+        return failure_response("Product not found!")
+    if product['sold']:
+        return failure_response('Product already sold')
+
+    user_id = user.serialize()['id']
+    if user_id == product['seller_id']:
+        return failure_response("Cannot buy your own product")
+
+    product = dao.buy_product(product_id, user_id)
 
     return success_response(product)
 
@@ -121,11 +161,7 @@ def register_user():
     if not created:
         return failure_response('User already exists')
 
-    return success_response({
-        'session_token': user.session_token,
-        'session_expiration': str(user.session_expiration),
-        'update_token': user.update_token
-    })
+    return success_response(user.session_serialize())
 
 
 @app.route('/login/', methods=['POST'])
@@ -142,11 +178,7 @@ def login():
     if not success:
         return failure_response('Email or password is incorrect')
 
-    return success_response({
-        'session_token': user.session_token,
-        'session_expiration': str(user.session_expiration),
-        'update_token': user.update_token
-    })
+    return success_response(user.session_serialize())
 
 
 @app.route('/session/', methods=['POST'])
@@ -161,11 +193,7 @@ def update_session():
     except:
         failure_response('Invalid update token')
 
-    return success_response({
-        'session_token': user.session_token,
-        'session_expiration': str(user.session_expiration),
-        'update_token': user.update_token
-    })
+    return success_response(user.session_serialize())
 
 
 @app.route('/user/')

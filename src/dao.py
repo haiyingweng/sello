@@ -58,6 +58,21 @@ def delete_product_by_id(id):
     return serialized_product
 
 
+def buy_product(product_id, buyer_id):
+    product = Product.query.filter_by(id=product_id).first()
+    if product is None:
+        return None
+
+    product.buyer_id = buyer_id
+    product.sold = True
+    db.session.commit()
+
+    serialized_product = product.serialize()
+    serialized_product['categories'] = [c.serialize()
+                                        for c in product.categories]
+    return serialized_product
+
+
 def get_all_categories():
     serialized_categories = []
     for category in Category.query.all():

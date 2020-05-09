@@ -23,6 +23,11 @@ class Product(db.Model):
     price = db.Column(db.Float, nullable=False)
     sold = db.Column(db.Boolean, nullable=False)
     seller_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    buyer_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    # uidPayer = db.Column(db.Integer, db.ForeignKey("User.ID"))
+    # uidReceiver = db.Column(db.Integer, db.ForeignKey("User.ID"))
+
     categories = db.relationship(
         'Category', secondary=association_table, back_populates='products')
 
@@ -42,7 +47,8 @@ class Product(db.Model):
             'condition': self.condition,
             'price': self.price,
             'sold': self.sold,
-            'seller_id': self.seller_id
+            'seller_id': self.seller_id,
+            'buyer_id': self.buyer_id
         }
 
 
@@ -68,20 +74,17 @@ class User(db.Model):
     username = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False, unique=True)
     password_digest = db.Column(db.String, nullable=False)
-    products = db.relationship('Product', cascade='delete')
+    selling = db.relationship(
+        'Product', foreign_keys='Product.seller_id', cascade='delete')
+    buying = db.relationship(
+        'Product', foreign_keys='Product.buyer_id', cascade='delete')
+# Payments = db.relationship('Payment', backref = 'payer', lazy = 'dynamic', foreign_keys = 'Payment.uidPayer')
+# Received = db.realtionship('Payment', backref = 'Receiver', lazy = 'dynamic, foreign_keys = 'Payment.uidReceiver')
 
     # Session
     session_token = db.Column(db.String, nullable=False, unique=True)
     session_expiration = db.Column(db.DateTime, nullable=False)
     update_token = db.Column(db.String, nullable=False, unique=True)
-
-    def serialize(self):
-        return {
-            'id': self.id,
-            'username': self.username,
-            'email': self.email,
-            'products': [p.serialize() for p in self.products]
-        }
 
     def __init__(self, **kwargs):
         self.username = kwargs.get('username', '')
@@ -91,6 +94,22 @@ class User(db.Model):
             bcrypt.gensalt(rounds=13)
         )
         self.renew_session()
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+            'selling': [p.serialize() for p in self.selling],
+            'buying': [p.serialize() for p in self.buying]
+        }
+
+    def session_serialize(self):
+        return {
+            'session_token': self.session_token,
+            'session_expiration': str(self.session_expiration),
+            'update_token': self.update_token
+        }
 
     def _urlsafe_base_64(self):
         return hashlib.sha1(os.urandom(64)).hexdigest()
