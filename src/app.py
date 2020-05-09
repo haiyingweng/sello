@@ -44,15 +44,28 @@ def get_products():
 
 @app.route('/products/', methods=['POST'])
 def create_product():
-    body = json.loads(request.data)
+    success, session_token = extract_token(request)
 
+    if not success:
+        return session_token
+
+    user = user_dao.get_user_by_session_token(session_token)
+
+    if not user or not user.verify_session_token(session_token):
+        return failure_response('Invalid session token')
+
+    user = user.serialize()
+    print(user)
+    print(user['id'])
+    body = json.loads(request.data)
     course = dao.create_product(
         name=body.get('name'),
         description=body.get('description'),
         condition=body.get('condition'),
         price=body.get('price'),
         sold=False,
-        categories=body.get('categories')
+        categories=body.get('categories'),
+        seller_id=user['id']
     )
 
     return success_response(course)
@@ -100,8 +113,8 @@ def register_user():
     email = body.get('email')
     password = body.get('password')
 
-    if not email or not password:
-        return failure_response('Email or password is missing')
+    if not email or not password or not username:
+        return failure_response('Username, email, or password is missing')
 
     created, user = user_dao.create_user(username, email, password)
 
@@ -153,6 +166,21 @@ def update_session():
         'session_expiration': str(user.session_expiration),
         'update_token': user.update_token
     })
+
+
+@app.route('/user/')
+def current_user():
+    success, session_token = extract_token(request)
+
+    if not success:
+        return session_token
+
+    user = user_dao.get_user_by_session_token(session_token)
+
+    if not user or not user.verify_session_token(session_token):
+        return failure_response('Invalid session token')
+
+    return success_response(user.serialize())
 
 
 if __name__ == "__main__":

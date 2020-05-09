@@ -11,13 +11,14 @@ def get_all_products():
     return serialized_products
 
 
-def create_product(name, description, condition, price, sold, categories):
+def create_product(name, description, condition, price, sold, categories, seller_id):
     new_product = Product(
         name=name,
         description=description,
         condition=condition,
         price=price,
         sold=sold,
+        seller_id=seller_id
     )
 
     new_product.categories = []

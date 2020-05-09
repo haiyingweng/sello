@@ -22,6 +22,7 @@ class Product(db.Model):
     condition = db.Column(db.String, nullable=False)
     price = db.Column(db.Float, nullable=False)
     sold = db.Column(db.Boolean, nullable=False)
+    seller_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     categories = db.relationship(
         'Category', secondary=association_table, back_populates='products')
 
@@ -29,8 +30,9 @@ class Product(db.Model):
         self.name = kwargs.get('name', '')
         self.description = kwargs.get('description', '')
         self.condition = kwargs.get('condition', '')
-        self.price = kwargs.get('price', '')
-        self.sold = kwargs.get('sold', '')
+        self.price = kwargs.get('price')
+        self.sold = kwargs.get('sold')
+        self.seller_id = kwargs.get('seller_id')
 
     def serialize(self):
         return {
@@ -39,7 +41,8 @@ class Product(db.Model):
             'description': self.description,
             'condition': self.condition,
             'price': self.price,
-            'sold': self.sold
+            'sold': self.sold,
+            'seller_id': self.seller_id
         }
 
 
@@ -65,15 +68,24 @@ class User(db.Model):
     username = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False, unique=True)
     password_digest = db.Column(db.String, nullable=False)
+    products = db.relationship('Product', cascade='delete')
 
     # Session
     session_token = db.Column(db.String, nullable=False, unique=True)
     session_expiration = db.Column(db.DateTime, nullable=False)
     update_token = db.Column(db.String, nullable=False, unique=True)
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+            'products': [p.serialize() for p in self.products]
+        }
+
     def __init__(self, **kwargs):
         self.username = kwargs.get('username', '')
-        self.email = kwargs.get('email', '')
+        self.email = kwargs.get('email')
         self.password_digest = bcrypt.hashpw(
             kwargs.get('password').encode('utf8'),
             bcrypt.gensalt(rounds=13)
