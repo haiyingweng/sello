@@ -36,7 +36,12 @@ Response
             "sold": false,
             "seller_id": 1,
             "buyer_id": null,
-            "categories": [" <SERIALIZED CATEGORY>, ... "]
+            "categories": [
+                {
+                    "category": "video games"
+                }
+                "..."
+            ]
         }
         "..."
     ]
@@ -71,7 +76,12 @@ Response
         "sold": false,
         "seller_id": 2,
         "buyer_id": null,
-        "categories": [" <SERIALIZED CATEGORY>, ... "]
+        "categories": [
+            {
+                "category": "<USER INPUT CATEGORY 1>"
+            }
+            "..."
+        ]
     }
 } 
 
@@ -93,7 +103,12 @@ Response
         "sold": false,
         "seller_id": 1,
         "buyer_id": 2,
-        "categories": [" <SERIALIZED CATEGORY>, ... "]
+        "categories": [
+            {
+                "category": "video games"
+            }
+            "..."
+        ]
     }
 } 
 
@@ -115,7 +130,12 @@ Response
         "sold": false,
         "seller_id": 1,
         "buyer_id": null,
-        "categories": [" <SERIALIZED CATEGORY>, ... "]
+        "categories": [
+            {
+                "category": "video games"
+            }
+            "..."
+        ]
     }
 }
 
@@ -137,7 +157,12 @@ Response
         "sold": true,
         "seller_id": 1,
         "buyer_id": 2,
-        "categories": [" <SERIALIZED CATEGORY>, ... "]
+        "categories": [
+            {
+                "category": "video games"
+            }
+            "..."
+        ]
     }
 }
 
@@ -201,8 +226,20 @@ Response
         "id": 1,
         "username": "<USER USERNAME>",
         "email": "<USER INPUT FOR EMAIL>",
-        "selling": [" <SERIALIZED PRODUCT>, ... "],
-        "buying": [" <SERIALIZED PRODUCT>, ... "]
+        "selling": [
+            {
+                "id": 1,
+                "name": "Switch",
+                "description": "video game console",
+                "condition": "new",
+                "price": 100.0,
+                "sold": false,
+                "seller_id": 1,
+                "buyer_id": null
+            }
+            "..."
+        ],
+        "buying": []
     }
 }
 ```
@@ -235,7 +272,19 @@ Response
     "data": [
         {
             "category": "games",
-            "products": [" <SERIALIZED PRODUCT>, ... "]
+            "products": [
+                {
+                    "id": 1,
+                    "name": "Switch",
+                    "description": "video game console",
+                    "condition": "new",
+                    "price": 100.0,
+                    "sold": false,
+                    "seller_id": 1,
+                    "buyer_id": null
+                }
+            "..."
+            ]
         },
         "..."
     ]
@@ -248,8 +297,20 @@ Response
 {
     "success": true,
     "data": {
-            "category": "games",
-            "products": [" <SERIALIZED PRODUCT>, ... "]
+        "category": "games",
+        "products": [
+            {
+                "id": 1,
+                "name": "Switch",
+                "description": "video game console",
+                "condition": "new",
+                "price": 100.0,
+                "sold": false,
+                "seller_id": 1,
+                "buyer_id": null
+            }
+        "..."
+        ]
     }
 }
 ```
