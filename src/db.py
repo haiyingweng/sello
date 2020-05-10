@@ -25,9 +25,6 @@ class Product(db.Model):
     seller_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     buyer_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    # uidPayer = db.Column(db.Integer, db.ForeignKey("User.ID"))
-    # uidReceiver = db.Column(db.Integer, db.ForeignKey("User.ID"))
-
     categories = db.relationship(
         'Category', secondary=association_table, back_populates='products')
 
@@ -78,8 +75,6 @@ class User(db.Model):
         'Product', foreign_keys='Product.seller_id', cascade='delete')
     buying = db.relationship(
         'Product', foreign_keys='Product.buyer_id', cascade='delete')
-# Payments = db.relationship('Payment', backref = 'payer', lazy = 'dynamic', foreign_keys = 'Payment.uidPayer')
-# Received = db.realtionship('Payment', backref = 'Receiver', lazy = 'dynamic, foreign_keys = 'Payment.uidReceiver')
 
     # Session
     session_token = db.Column(db.String, nullable=False, unique=True)
