@@ -36,7 +36,7 @@ Response
             "sold": false,
             "seller_id": 1,
             "buyer_id": null,
-            "categories": ["<SERIALIZED CATEGORY>, ... "]
+            "categories": [" <SERIALIZED CATEGORY>, ... "]
         }
         "..."
     ]
@@ -50,11 +50,11 @@ Response
 Request
 
 {
-    "name": <USER INPUT>,
-    "description": <USER INPUT>,
-    "condition": <USER INPUT>,
-    "price": <USER INPUT>,
-    "categories": <USER INPUT, COMMA-SEPARATED CATEGORIES>
+    "name": "<USER INPUT>",
+    "description": "<USER INPUT>",
+    "condition": "<USER INPUT>",
+    "price": "<USER INPUT>",
+    "categories": "<USER INPUT, COMMA-SEPARATED CATEGORIES>"
 }
 ```
 ```json
@@ -63,15 +63,15 @@ Response
 {
     "success": true,
     "data": {
-        "id": <ID>,
-        "name": <USER INPUT FOR NAME>,
-        "description": <USER INPUT FOR DESCRIPTION>,
-        "condition": <USER INPUT FOR CONDITION>,
-        "price": <USER INPUT FOR PRICE>,
+        "id": 1,
+        "name": "<USER INPUT FOR NAME>",
+        "description": "<USER INPUT FOR DESCRIPTION>",
+        "condition": "<USER INPUT FOR CONDITION>",
+        "price": "<USER INPUT FOR PRICE>",
         "sold": false,
-        "seller_id": <CURRENT USER ID>,
+        "seller_id": 2,
         "buyer_id": null,
-        "categories": [ <SERIALIZED CATEGORY>, ... ]
+        "categories": [" <SERIALIZED CATEGORY>, ... "]
     }
 } 
 
@@ -93,7 +93,7 @@ Response
         "sold": false,
         "seller_id": 1,
         "buyer_id": 2,
-        "categories": [ <SERIALIZED CATEGORY>, ... ]
+        "categories": [" <SERIALIZED CATEGORY>, ... "]
     }
 } 
 
@@ -115,7 +115,7 @@ Response
         "sold": false,
         "seller_id": 1,
         "buyer_id": null,
-        "categories": [ <SERIALIZED CATEGORY>, ... ]
+        "categories": [" <SERIALIZED CATEGORY>, ... "]
     }
 }
 
@@ -137,7 +137,7 @@ Response
         "sold": true,
         "seller_id": 1,
         "buyer_id": 2,
-        "categories": [ <SERIALIZED CATEGORY>, ... ]
+        "categories": [" <SERIALIZED CATEGORY>, ... "]
     }
 }
 
@@ -149,9 +149,9 @@ Response
 Request
 
 {
-    "username": <USER INPUT>,
-    "email": <USER INPUT>,
-    "password": <USER INPUT>
+    "username": "<USER INPUT>",
+    "email": "<USER INPUT>",
+    "password": "<USER INPUT>"
 }
 ```
 ```json
@@ -160,9 +160,9 @@ Response
 {
     "success": true,
     "data": {
-        "session_token": <TOKEN>,
-        "session_expiration": <SESSION EXPIRATION DATE>,
-        "update_token": <TOKEN>
+        "session_token": "<TOKEN>",
+        "session_expiration": "<SESSION EXPIRATION DATE>",
+        "update_token": "<TOKEN>"
     }
 }
 ```
@@ -173,8 +173,8 @@ Response
 Request
 
 {
-    "email": <USER INPUT>,
-    "password": <USER INPUT>
+    "email": "<USER INPUT>",
+    "password": "<USER INPUT>"
 }
 ```
 ```json
@@ -183,9 +183,9 @@ Response
 {
     "success": true,
     "data": {
-        "session_token": <TOKEN>,
-        "session_expiration": <SESSION EXPIRATION DATE>,
-        "update_token": <TOKEN>
+        "session_token": "<TOKEN>",
+        "session_expiration": "<SESSION EXPIRATION DATE>",
+        "update_token": "<TOKEN>"
     }
 }
 ```
@@ -199,10 +199,10 @@ Response
     "success": true,
     "data": {
         "id": 1,
-        "username": <USER USERNAME>,
-        "email": <USER INPUT FOR EMAIL>,
-        "selling": [<SERIALIZED PRODUCT>, ...],
-        "buying": [<SERIALIZED PRODUCT>, ...]
+        "username": "<USER USERNAME>",
+        "email": "<USER INPUT FOR EMAIL>",
+        "selling": [" <SERIALIZED PRODUCT>, ... "],
+        "buying": [" <SERIALIZED PRODUCT>, ... "]
     }
 }
 ```
@@ -220,9 +220,9 @@ Response
 {
     "success": true,
     "data": {
-        "session_token": <TOKEN>,
-        "session_expiration": <SESSION EXPIRATION DATE>,
-        "update_token": <TOKEN>
+        "session_token": "<TOKEN>",
+        "session_expiration": "<SESSION EXPIRATION DATE>",
+        "update_token": "<TOKEN>"
     }
 }
 ```
@@ -235,9 +235,9 @@ Response
     "data": [
         {
             "category": "games",
-            "products": [<SERIALIZED PRODUCT>, ...]
+            "products": [" <SERIALIZED PRODUCT>, ... "]
         },
-        ...
+        "..."
     ]
 }
 ```
@@ -249,7 +249,7 @@ Response
     "success": true,
     "data": {
             "category": "games",
-            "products": [<SERIALIZED PRODUCT>, ...]
+            "products": [" <SERIALIZED PRODUCT>, ... "]
     }
 }
 ```
