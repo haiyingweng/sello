@@ -5,30 +5,19 @@ Server IP: http://35.231.199.53/
 
 ## Contents
 - Products
-<br>
-&emsp;&emsp;[Get all products](#Get-all-products)
-<br>
-&emsp;&emsp;[Create a product](#Create-a-product)
-<br>
-&emsp;&emsp;[Get a specific product](#Get-a-specific-product)
-<br>
-&emsp;&emsp;[Delete a product](#Delete-a-product)
-<br>
-&emsp;&emsp;[Buy a specific product](#Buy-a-specific-product)
+    - [Get all products](#Get-all-products)
+    - [Create a product](#Create-a-product)
+    - [Get a specific product](#Get-a-specific-product)
+    - [Delete a product](#Delete-a-product)
+    - [Buy a specific product](#Buy-a-specific-product)
 - User
-<br>
-&emsp;&emsp;[Register an account](#Register-an-account)
-<br>
-&emsp;&emsp;[Login](#Login)
-<br>
-&emsp;&emsp;[Get information of current user](#Get-information-of-current-user)
-<br>
-&emsp;&emsp;[Update session](#Update-session)
-- Category
-<br>
-&emsp;&emsp;[Get all categories](#Get-all-categories)
-<br>
-&emsp;&emsp;[Get a specific category](#Get-a-specific-category)
+    - [Register an account](#Register-an-account)
+    - [Login](#Login)
+    - [Get information of current user](#Get-information-of-current-user)
+    - [Update session](#Update-session)
+- Categories
+    - [Get all categories](#Get-all-categories)
+    - [Get a specific category](#Get-a-specific-category)
 
 ### Get all products
 `GET`  `/products/`
@@ -47,9 +36,9 @@ Response
             "sold": false,
             "seller_id": 1,
             "buyer_id": null,
-            "categories": [ <SERIALIZED CATEGORY>, ... ]
+            "categories": ["<SERIALIZED CATEGORY>, ... "]
         }
-        ...
+        "..."
     ]
 }
 
