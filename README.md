@@ -1,8 +1,6 @@
 # sello
 A simplified version of a platform to buy or sell items
 
-Server IP: http://35.231.199.53/
-
 ## Contents
 - Products
     - [Get all products](#Get-all-products)
