@@ -1,4 +1,9 @@
 from db import db, Product, Category
+import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
+SENDGRID_API_KEY = api_key = os.environ.get('SENDGRID_API_KEY')
 
 
 def get_all_products():
@@ -62,10 +67,15 @@ def buy_product(product_id, buyer_id):
     product = Product.query.filter_by(id=product_id).first()
     if product is None:
         return None
+    buyer = User.query.filter_by(id=buyer_id).first()
+    seller = User.query.filter_by(id=product.seller_id).first()
 
     product.buyer_id = buyer_id
     product.sold = True
     db.session.commit()
+
+    _send_confirmation_email(buyer.username, buyer.email,
+                             seller.username, product.name)
 
     serialized_product = product.serialize()
     serialized_product['categories'] = [c.serialize()
@@ -100,3 +110,20 @@ def _get_or_create_category(cat):
     category = Category(category=cat)
     db.session.commit()
     return category
+
+
+def _send_confirmation_email(buyer_name, buyer_email, seller_name, product_name):
+    content = '<strong>Hi %s, </strong> <br><br>You have successfully made your transation with %s for item: %s. <br><br>Thanks for using Sello' % (
+        buyer_name, seller_name, product_name)
+    print('content' + content)
+    message = Mail(
+        from_email='haiyingweng@gmail.com',
+        to_emails=buyer_email,
+        subject='Thanks for your transaction with Sello',
+        html_content=content)
+    try:
+        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        response = sg.send(message)
+        print(response.status_code)
+    except Exception as e:
+        print(str(e))

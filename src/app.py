@@ -29,11 +29,11 @@ def extract_token(request):
 
 
 def success_response(data, code=200):
-    return json.dumps({"success": True, "data": data}), code
+    return json.dumps({'success': True, 'data': data}), code
 
 
 def failure_response(message, code=404):
-    return json.dumps({"success": False, "error": message}), code
+    return json.dumps({'success': False, 'error': message}), code
 
 
 @app.route('/')
@@ -94,11 +94,11 @@ def delete_product(product_id):
 
     product = dao.get_product_by_id(product_id)
     if product is None:
-        return failure_response("Product not found!")
+        return failure_response('Product not found!')
 
     user_id = user.serialize()['id']
     if not user_id == product['seller_id']:
-        return failure_response("Cannot delete product not sold by current user")
+        return failure_response('Cannot delete product not sold by current user')
 
     product = dao.delete_product_by_id(product_id)
 
@@ -108,7 +108,6 @@ def delete_product(product_id):
 @app.route('/products/<int:product_id>/buy/', methods=['POST'])
 def buy_product(product_id):
     success, session_token = extract_token(request)
-
     if not success:
         return session_token
 
@@ -124,7 +123,7 @@ def buy_product(product_id):
 
     user_id = user.serialize()['id']
     if user_id == product['seller_id']:
-        return failure_response("Cannot buy your own product")
+        return failure_response('Cannot buy your own product')
 
     product = dao.buy_product(product_id, user_id)
 
@@ -141,7 +140,7 @@ def get_category(category_id):
     category = dao.get_category_by_id(category_id)
 
     if category is None:
-        return failure_response("Category not found!")
+        return failure_response('Category not found!')
 
     return success_response(category)
 
