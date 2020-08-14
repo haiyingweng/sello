@@ -141,6 +141,7 @@ Response
 
 ### Buy a specific product 
 `POST` `/products/{id}/buy/`
+Email confirmation sent upon successful transaction
 ```json
 Response
 
