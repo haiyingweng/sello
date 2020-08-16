@@ -1,9 +1,17 @@
+import base64
+import boto3
 from db import db, Product, Category
-import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+import os
+import random
+import re
+import string
 
 SENDGRID_API_KEY = api_key = os.environ.get('SENDGRID_API_KEY')
+
+S3_BUCKET = 'sello'
+IMAGE_BASE_URL = 'https://%s.s3.amazonaws.com/' % (S3_BUCKET)
 
 
 def get_all_products():
@@ -127,3 +135,25 @@ def _send_confirmation_email(buyer_name, buyer_email, seller_name, product_name)
         print(response.status_code)
     except Exception as e:
         print(str(e))
+
+
+def _upload_image(img_data):
+    s3 = boto3.resource('s3')
+
+    img_base64 = re.sub('^data:image/.+;base64,', '', img_data)
+
+    # Key for S3 object is a randomly generated string
+    key = ''.join(random.SystemRandom().choice(
+        string.ascii_uppercase + string.digits) for _ in range(10)) + '.jpg'
+    try:
+        obj = s3.Object(S3_BUCKET, key)
+        obj.put(
+            ACL='public-read',
+            Body=base64.b64decode(img_base64)
+        )
+        img_url = IMAGE_BASE_URL + key
+        print(img_url)
+        return img_url
+    except Exception as e:
+        print(e)
+        return None

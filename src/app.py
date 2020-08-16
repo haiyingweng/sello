@@ -76,7 +76,7 @@ def get_product(product_id):
     product = dao.get_product_by_id(product_id)
 
     if product is None:
-        return failure_response("Product not found!")
+        return failure_response('Product not found!')
 
     return success_response(product)
 
@@ -117,7 +117,7 @@ def buy_product(product_id):
 
     product = dao.get_product_by_id(product_id)
     if product is None:
-        return failure_response("Product not found!")
+        return failure_response('Product not found!')
     if product['sold']:
         return failure_response('Product already sold')
 
