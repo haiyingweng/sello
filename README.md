@@ -1,5 +1,41 @@
 # sello
-A simplified version of a platform to buy or sell items
+Backend for a simplified version of a platform to buy or sell items
+
+## Setup
+### Setup virtual env
+```python
+virtualenv venv
+. venv/bin/activate
+pip3 install -r requirements.txt
+```
+### Setup Sendgrid env
+[Integration Guide](https://app.sendgrid.com/guide/integrate/langs/python)
+```python
+echo "export SENDGRID_API_KEY='YOUR_API_KEY'" > sendgrid.env
+echo "sendgrid.env" >> .gitignore
+source ./sendgrid.env
+```
+### Setup AWS env
+[Guide](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html)
+
+Create the `credentials` and `config` files. By default, their locations are at `~/.aws/credentials` and `~/.aws/cofig`
+
+credentials:
+```python
+[default]
+aws_access_key_id = YOUR_ACCESS_KEY
+aws_secret_access_key = YOUR_SECRET_KEY
+```
+config:
+```python
+[default]
+region=us-east-1
+```
+
+## Run
+```
+python3 app.py
+```
 
 ## Contents
 - Products
@@ -56,7 +92,8 @@ Request
     "name": "<USER INPUT>",
     "description": "<USER INPUT>",
     "condition": "<USER INPUT>",
-    "price": "<USER INPUT>",
+    "price": 100.0,
+    "image": "OPTIONAL, BASE_64 ENCODED STRING OF IMAGE",
     "categories": "<USER INPUT, COMMA-SEPARATED CATEGORIES>"
 }
 ```
@@ -72,6 +109,7 @@ Response
         "condition": "<USER INPUT FOR CONDITION>",
         "price": "<USER INPUT FOR PRICE>",
         "sold": false,
+        "image": "URL TO IMAGE OR NULL",
         "seller_id": 2,
         "buyer_id": null,
         "categories": [
@@ -99,6 +137,7 @@ Response
         "condition": "new",
         "price": 100.0,
         "sold": false,
+        "image": "https://sello.s3.amazonaws.com/A45FTBBFN1.jpg",
         "seller_id": 1,
         "buyer_id": 2,
         "categories": [
@@ -126,6 +165,7 @@ Response
         "condition": "new",
         "price": 100.0,
         "sold": false,
+        "image": "https://sello.s3.amazonaws.com/A45FTBBFN1.jpg",
         "seller_id": 1,
         "buyer_id": null,
         "categories": [
@@ -155,6 +195,7 @@ Response
         "condition": "new",
         "price": 100.0,
         "sold": true,
+        "image": "https://sello.s3.amazonaws.com/A45FTBBFN1.jpg",
         "seller_id": 1,
         "buyer_id": 2,
         "categories": [
