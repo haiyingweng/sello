@@ -1,6 +1,6 @@
 import base64
 import boto3
-from db import db, Product, Category
+from db import db, Product, Category, User
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 import os
@@ -24,13 +24,21 @@ def get_all_products():
     return serialized_products
 
 
-def create_product(name, description, condition, price, sold, categories, seller_id):
+def create_product(name, description, condition, price, image, categories, seller_id):
+    image_url = None
+    if image is not None:
+        try:
+            image_url = _upload_image(image)
+        except Exception as e:
+            return e
+
     new_product = Product(
         name=name,
         description=description,
         condition=condition,
         price=price,
-        sold=sold,
+        sold=False,
+        image=image_url,
         seller_id=seller_id
     )
 
@@ -140,11 +148,13 @@ def _send_confirmation_email(buyer_name, buyer_email, seller_name, product_name)
 def _upload_image(img_data):
     s3 = boto3.resource('s3')
 
+    # extract base64 string
     img_base64 = re.sub('^data:image/.+;base64,', '', img_data)
 
-    # Key for S3 object is a randomly generated string
+    # key for S3 object is a randomly generated string
     key = ''.join(random.SystemRandom().choice(
         string.ascii_uppercase + string.digits) for _ in range(10)) + '.jpg'
+
     try:
         obj = s3.Object(S3_BUCKET, key)
         obj.put(
@@ -156,4 +166,4 @@ def _upload_image(img_data):
         return img_url
     except Exception as e:
         print(e)
-        return None
+        return e

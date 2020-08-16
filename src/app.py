@@ -55,20 +55,20 @@ def create_product():
         return failure_response('Invalid session token')
 
     user = user.serialize()
-    print(user)
-    print(user['id'])
     body = json.loads(request.data)
-    course = dao.create_product(
-        name=body.get('name'),
-        description=body.get('description'),
-        condition=body.get('condition'),
-        price=body.get('price'),
-        sold=False,
-        categories=body.get('categories'),
-        seller_id=user['id']
-    )
-
-    return success_response(course)
+    try:
+        course = dao.create_product(
+            name=body.get('name'),
+            description=body.get('description'),
+            condition=body.get('condition'),
+            price=body.get('price'),
+            image=body.get('image'),
+            categories=body.get('categories'),
+            seller_id=user['id']
+        )
+        return success_response(course)
+    except:
+        return failure_response('Failed to upload image')
 
 
 @app.route('/products/<int:product_id>/')

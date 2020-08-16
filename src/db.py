@@ -22,6 +22,7 @@ class Product(db.Model):
     condition = db.Column(db.String, nullable=False)
     price = db.Column(db.Float, nullable=False)
     sold = db.Column(db.Boolean, nullable=False)
+    image = db.Column(db.String)
     seller_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     buyer_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
@@ -34,6 +35,7 @@ class Product(db.Model):
         self.condition = kwargs.get('condition', '')
         self.price = kwargs.get('price')
         self.sold = kwargs.get('sold')
+        self.image = kwargs.get('image')
         self.seller_id = kwargs.get('seller_id')
 
     def serialize(self):
@@ -44,6 +46,7 @@ class Product(db.Model):
             'condition': self.condition,
             'price': self.price,
             'sold': self.sold,
+            'image': self.image,
             'seller_id': self.seller_id,
             'buyer_id': self.buyer_id
         }
