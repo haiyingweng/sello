@@ -37,7 +37,7 @@ region=us-east-1
 python3 app.py
 ```
 
-## Contents
+## API Spec
 - Products
     - [Get all products](#Get-all-products)
     - [Create a product](#Create-a-product)
